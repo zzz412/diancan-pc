@@ -6,23 +6,25 @@
 				<div class="meituan-title">扫码点餐商户端</div>
 				<div class="meituan-user">
 					<p>账号</p>
-					<el-input class="inptflex" placeholder="请输入账号"></el-input>
+					<el-input v-model="phone" class="inptflex" placeholder="请输入账号"></el-input>
 				</div>
 				<div class="meituan-user">
 					<p>密码</p>
-					<el-input class="inptflex" placeholder="请输入密码" show-password></el-input>
+					<el-input v-model="password" class="inptflex" placeholder="请输入密码" show-password></el-input>
 				</div>
 				<!-- 注册 -->
 				<div class="reg-view" @click="regiBtn()">{{ regi }}</div>
 				<!-- 登录或注册 -->
-				<el-button v-if="regi == '注册'" type="success" class="meituan-btn">登录</el-button>
-				<el-button v-else type="success" class="meituan-btn">注册</el-button>
+				<el-button v-if="regi == '注册'" type="success" class="meituan-btn" @click="login">登录</el-button>
+				<el-button v-else type="success" class="meituan-btn" @click="register">注册</el-button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+  import { loginApi, registerApi } from '@/api/auth'
+import { setToken } from '@/utils/auth'
 	export default {
 		data() {
 			return {
@@ -38,9 +40,24 @@
 				this.regi = this.regi == '登录' ? '注册' : '登录'
 			},
 			// 注册
-			async register() {},
+			async register() {
+        // 1. 发起请求
+        await registerApi({ phone: this.phone, password: this.password })
+        // 2. 切换到登录
+        this.$message.success('注册成功')
+        this.regi = '注册'
+      },
 			// 登录
-			async signin() {}
+			async login() {
+        // 1. 发起请求
+        const { data } = await loginApi({ phone: this.phone, password: this.password })
+        // 2. 获取数据
+        this.$message.success('登录成功')
+        // 3. 判断当前商家 是否添加信息   已添加 ->  首页
+        //                              未添加 ->  添加信息页
+        setToken(data)
+        this.$router.push('/modify-info')
+      }
 		}
 	}
 </script>

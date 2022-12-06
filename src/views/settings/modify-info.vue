@@ -1,30 +1,25 @@
 <template>
 	<div class="max-wid">
 		<div class="heading">
-			<p >返回上一页</p>
+			<p>返回上一页</p>
 			<p class="heading-users">修改店铺信息</p>
 		</div>
 		<!-- 店铺名称 -->
 		<div class="image-view-title">
 			<div class="image-list">店铺名称</div>
-			<el-input v-model="name" placeholder="请输入店铺名称"></el-input>
+			<el-input v-model="formInput.nickname" placeholder="请输入店铺名称"></el-input>
 		</div>
 		<!-- 店铺地址 -->
 		<div class="image-view-title">
 			<div class="image-list">店铺地址</div>
-			<el-input v-model="address" type="text" placeholder="请输入店铺地址"></el-input>
+			<el-input v-model="formInput.address" type="text" placeholder="请输入店铺地址"></el-input>
 		</div>
 		<!-- 店铺logo -->
 		<div class="image-view-title">
 			<div class="image-list">店铺logo</div>
 			<div>
-				<el-upload list-type="picture-card" name="file" accept=".jpg,.png,.webp,.jfif" :limit="1" :multiple="false">
-					<i class="el-icon-plus"></i>
-				</el-upload>
-				<!-- 大图展开 -->
-				<el-dialog :visible.sync="dialogVisible">
-					<img width="100%" alt="" />
-				</el-dialog>
+        <!-- 自定义组件的双向绑定 -->
+        <upload v-model="formInput.logo"></upload>
 			</div>
 		</div>
 
@@ -36,7 +31,19 @@
 </template>
 
 <script>
-	export default {}
+  import upload from '@/components/upload'
+	export default {
+    components: { upload },
+    data() {
+      return {
+        formInput: {
+          logo: ''
+        }
+      }
+    },
+    methods: {
+    }
+  }
 </script>
 
 <style scoped="scoped">
