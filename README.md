@@ -1,19 +1,18 @@
 # diancan-pc
+> 该项目为点餐小程序的 PC管理端
 
-## Project setup
-```
-npm install
-```
+## 使用说明
+1. 安装依赖: `yarn install`
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+2. 启动项目: `yarn serve`
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 项目包含内容
+1. 商家登录与注册
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+2. 菜品管理
+
+3. 订单管理
+
+4. 桌号管理
+
+5. 商家信息管理
