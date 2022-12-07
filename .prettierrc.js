@@ -35,5 +35,5 @@ module.exports = {
 	rangeStart: 0,
 	rangeEnd: Infinity,
 	// Vue文件脚本和样式标签缩进
-	vueIndentScriptAndStyle: true
+	vueIndentScriptAndStyle: false
 }

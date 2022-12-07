@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { Message } from 'element-ui'
+import { getToken } from './auth'
 
 // 封装的思路:  简化地址的填写【设置默认地址】  简化导入步骤【添加到Vue原型对象中】  简化返回的结果
 
@@ -11,6 +12,8 @@ const service = Axios.create({
 
 // 添加请求拦截器
 service.interceptors.request.use((config) => {
+  // 在请求头中携带Token
+  config.headers.authorization = 'Bearer ' + getToken()
   // 返回请求对象
   return config
 })
