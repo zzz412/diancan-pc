@@ -1,5 +1,7 @@
 import Axios from 'axios'
 import { Message } from 'element-ui'
+import store from '@/store'
+import router from '@/router'
 import { getToken } from './auth'
 
 // 封装的思路:  简化地址的填写【设置默认地址】  简化导入步骤【添加到Vue原型对象中】  简化返回的结果
@@ -26,6 +28,11 @@ service.interceptors.response.use(
     // 统一对状态码进行判断
     if (data.code !== 200) {
       Message.error(data.msg || '操作失败')
+      // 判断错误类型
+      if (data.code === 301) {
+        store.commit('RESET_STATE')
+        router.push('/login')
+      }
       return Promise.reject(data.msg)
     }
     return data // 将响应的data值返回
