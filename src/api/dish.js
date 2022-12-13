@@ -12,3 +12,7 @@ export const setDishCateApi = data => request.put('/dish/cate', data)
 
 // * 删除菜品类目
 export const delDishCateApi = id => request.delete('/dish/cate/' + id)
+
+
+// * 获取菜品信息
+export const getDishDataApi = data => request.get('/dish/data', { params: data })

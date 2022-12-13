@@ -4,59 +4,55 @@
 		<div class="heading">菜品管理</div>
 		<!-- 内容 -->
 		<div class="content-view">
-			<!-- 按钮区域 -->
-			<div class="button-view">
-				<router-link :to="{ name: 'edit-dish' }">
-					<el-button type="success" size="medium">添加菜品</el-button>
-				</router-link>
-			</div>
-			<!-- 表格区域 -->
-			<div class="table-view">
-				<!-- 表头 -->
-				<div class="tab-list">
-					<span v-for="(item, index) in tablist" :key="index">{{ item }}</span>
-				</div>
-				<!-- 表格 -->
-				<div class="tab-table" v-for="(item, index) in tableData" :key="index">
-					<div>{{ item.a }}</div>
-					<div>{{ item.b }}</div>
-					<div>{{ item.c }}</div>
-					<div>
-						<el-image lazy class="elimg" fit="cover" />
-					</div>
-					<div>{{ item.d }}</div>
-					<div>
-						<el-button size="small">编辑</el-button>
-						<el-button type="danger" size="small">下架</el-button>
-						<el-button v-if="false" type="warning" size="small" disabled>已下架</el-button>
-					</div>
-				</div>
-				<!-- 分页 -->
-				<el-pagination background layout="prev, pager, next" :hide-on-single-page="true" :total="100" />
-			</div>
-			<!-- 没有数据 -->
-			<div class="nodatas" v-if="false">还没有菜品数据</div>
-		</div>
+      <ProTable :tabHeaders="tablist" :formList="formList" :api="getDishDataApi" :initParams="initParams">        
+        <!-- 操作区域 -->
+        <template #actionButton>
+          <el-button type="info" size="medium">新增</el-button>
+        </template>
+        
+        
+        <!-- 操作内容 -->
+        <template #opera>
+          <el-button type="danger" size="mini">删除</el-button>
+          <el-button  size="mini">编辑</el-button>
+        </template>
+      </ProTable>
+    </div>
 	</div>
 </template>
 
 <script>
-	export default {
-		name: 'Dish',
-		data() {
-			return {
-				// 表头
-				tablist: ['创建时间', '类目', '菜品名称', '菜品图片', '价格(元)', '操作'],
-				// 表格数据
-				tableData: [
-					{ a: '1', b: '2', c: '3', d: '4', e: '5' },
-					{ a: '1', b: '2', c: '3', d: '4', e: '5' },
-					{ a: '1', b: '2', c: '3', d: '4', e: '5' },
-					{ a: '1', b: '2', c: '3', d: '4', e: '5' }
-				]
-			}
+import ProTable from '@/components/ProTable'
+import { getDishDataApi } from '@/api/dish'
+const cateEnum = [ { label: '全部', value: undefined }, { label: '荤菜', value: 1 }, { label: '素菜', value: 2 }]
+const stateEnum = [{ label: '全部', value: undefined }, { label: '上架', value: 1 }, { label: '下架', value: 0 }]
+
+export default {
+	name: 'Dish',
+  components: { ProTable },
+	data() {
+		return {
+      getDishDataApi,
+			// 表头 { title: '创建时间', prop: 'a' }
+			tablist: [
+        { title: '创建时间', prop: 'time', type: 'link' },
+        { title: '类目', prop: 'category', type: 'tag' },
+        { title: '菜品名称', prop: 'name' },
+        { title: '菜品图片', prop: 'image', type: 'img' },
+        { title: '价格(元)', prop: 'unitprice', type: 'tag' },
+        { title: '操作', prop: 'opera' },
+      ],
+      // 表单
+      formList: [
+        { type: 'text', prop: 'name', label: '菜品名' },
+        { type: 'select', prop: 'cid', label: '菜品类目', enum: cateEnum },
+        { type: 'select', prop: 'onsale', label: '菜品状态', enum: stateEnum }
+      ],
+      // 默认查询参数
+      initParams: { page: 1, pageSize: 2, name: '坤' }
 		}
 	}
+}
 </script>
 
 <style lang="scss" scoped></style>
