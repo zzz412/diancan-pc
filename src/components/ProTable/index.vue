@@ -25,6 +25,7 @@
         <el-button type="success" size="medium" icon="el-icon-search" @click="search">查询</el-button>
       </div>
     </div>
+
     <!-- 表格区域 -->
     <div class="table-view">
       <!-- 表头 -->
@@ -35,7 +36,7 @@
         <div v-for="item2 in tabHeaders" :key="item2.title">
           <slot :name="item2.prop" :rows="item" :$index="index">
             <!-- 图片类型 -->
-            <el-image v-if="item2.type === 'img'" class="tab-cover" :src="item[item2.prop]" />
+            <el-image v-if="item2.type === 'img'" class="tab-cover" :src="item[item2.prop]" :preview-src-list="[item[item2.prop]]" />
             <!-- 标签类型 -->
             <el-tag v-else-if="item2.type === 'tag'" effect="dark" type="success" >{{ item[item2.prop] }}</el-tag>
             <!-- 链接类型 -->
@@ -59,6 +60,7 @@
     </div>
 
     <!-- 空状态区域 -->
+		<div v-if="!tabData.length" class="nodatas">暂无数据</div>
   </div>
 </template>
 
@@ -121,10 +123,12 @@ export default {
     },
     // 重置数据
     reset() {
-      // 还原页码
-      this.pageable.page = 1
-      // 还原查询数据
+      // 清空总参数
+      this.totalParams = {}
+      // 重置查询数据
       this.queryParams = { ...this.initParams }
+      // 修改页码
+      this.pageable.page = 1
       // 查询
       this.search()
     },
